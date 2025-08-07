@@ -1,0 +1,17 @@
+---
+# tasks file for roles/php
+- name: Install PHP and modules
+  dnf:
+    name:
+      - php
+      - php-mysqlnd
+      - php-fpm
+      - php-cli
+    state: present
+    update_cache: yes
+
+- name: Restart Apache after PHP install
+  service:
+    name: httpd
+    state: restarted
+

@@ -1,0 +1,35 @@
+---
+# tasks file for roles/mysql
+- name: Install MySQL server
+  yum:
+    name: mysql-server
+    state: present
+
+- name: Install PyMySQL
+  yum:
+    name: python3-PyMySQL
+    state: present
+
+- name: Start and Enable MySQL service
+  systemd:
+    name: mysqld
+    state: started
+    enabled: yes
+
+- name: Wait for MySQL to be available
+  wait_for:
+    port: 3306
+    host: 127.0.0.1
+    delay: 3
+    timeout: 30
+    state: started
+
+- name: Set MySQL root password
+  community.mysql.mysql_user:
+    name: root
+    host: localhost
+   password: "MyRootPass123!"
+    login_unix_socket: /var/lib/mysql/mysql.sock
+    check_implicit_admin: yes
+    state: present
+

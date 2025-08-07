@@ -1,0 +1,15 @@
+---
+# tasks file for roles/apache
+- name: Install Apache
+  dnf:
+    name: httpd
+    state: present
+    update_cache: yes
+
+- name: Copy index.php
+  copy:
+    src: index.php
+    dest: /var/www/html/index.php
+    mode: '0644'
+  notify: Restart Apache
+
